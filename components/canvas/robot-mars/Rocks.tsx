@@ -3,13 +3,13 @@
 
 import { useLayoutEffect, useMemo } from "react";
 import { type ThreeElements } from "@react-three/fiber";
-import { useGLTF, useTexture } from "@react-three/drei";
+import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
-import { DRACO_PATH, MODELS, TEXTURES, prepareBakeTexture } from "./assets";
+import { MODELS, TEXTURES, prepareBakeTexture, useModel } from "./assets";
 
 // Fully baked: unlit MeshBasicMaterial. Meshes named *no_l_bake* keep their GLB material.
 export function Rocks(props: ThreeElements["group"]) {
-  const { scene } = useGLTF(MODELS.rocks, DRACO_PATH);
+  const scene = useModel(MODELS.rocks);
   const bake = useTexture(TEXTURES.rocksBake);
 
   const material = useMemo(

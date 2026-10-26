@@ -2,7 +2,7 @@
 
 ## react-three-next
 
-The shared-canvas setup (`Scene`, `View`, `Layout3D`, `lib/r3f-tunnel.ts`) is based on [pmndrs/react-three-next](https://github.com/pmndrs/react-three-next), MIT License:
+The Next.js + R3F setup (`Scene`, `useOnScreen`, lazy loading) is inspired by [pmndrs/react-three-next](https://github.com/pmndrs/react-three-next), MIT License:
 
 ```
 Copyright (c) 2012-2021 Scott Chacon and others

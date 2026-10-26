@@ -3,13 +3,13 @@
 
 import { useLayoutEffect, useMemo } from "react";
 import { type ThreeElements } from "@react-three/fiber";
-import { useGLTF, useTexture } from "@react-three/drei";
+import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
-import { DRACO_PATH, MODELS, TEXTURES, prepareBakeTexture } from "./assets";
+import { MODELS, TEXTURES, prepareBakeTexture, useModel } from "./assets";
 
 // Lit ground: tinted MeshStandardMaterial + baked lightMap/aoMap, with the bake's normal pass reused as a bump map.
 export function Ground(props: ThreeElements["group"]) {
-  const { scene } = useGLTF(MODELS.ground, DRACO_PATH);
+  const scene = useModel(MODELS.ground);
   const { light, ao, bump } = useTexture({
     light: TEXTURES.groundLight,
     ao: TEXTURES.groundAo,

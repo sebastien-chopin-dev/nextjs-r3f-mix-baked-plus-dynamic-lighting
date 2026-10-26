@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT. © 2026 Tridimotion (https://tridimotion.com). Credit appreciated.
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { useThree } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Stage } from "@react-three/drei";
 import * as THREE from "three";
 import { preloadRobotMars } from "./assets";
@@ -11,10 +12,23 @@ import { Rover } from "./Rover";
 
 preloadRobotMars();
 
+// Where a drei <Bounds> fit ends for this scene. Canvases narrower than ~0.95 (portrait
+// fullscreen) back the camera off so the whole ground stays in view.
+const CAMERA_DIRECTION = new THREE.Vector3(0, 1, 4).normalize();
+const CAMERA_DISTANCE = 7;
+
 export function RobotMarsScene() {
   const camera = useRef<THREE.PerspectiveCamera>(null);
   const [lookAt, setLookAt] = useState(
     () => new THREE.Vector3(-0.58, 2.65, 8.14),
+  );
+  const aspect = useThree((state) => state.size.width / state.size.height);
+  const cameraPosition = useMemo(
+    () =>
+      CAMERA_DIRECTION.clone().multiplyScalar(
+        CAMERA_DISTANCE * Math.max(1, 0.95 / aspect),
+      ),
+    [aspect],
   );
 
   return (
@@ -23,7 +37,7 @@ export function RobotMarsScene() {
         ref={camera}
         makeDefault
         fov={40}
-        position={[0, 2, 8]}
+        position={cameraPosition}
       />
       {/* The rover's head turns to the camera when an orbit ends. */}
       <OrbitControls
@@ -37,8 +51,10 @@ export function RobotMarsScene() {
         }}
       />
 
+      {/* Stage still centers the model. adjustCamera would animate a Bounds fit after load,
+          so the camera is placed where that fit ends instead (see CAMERA_DISTANCE). */}
       <Stage
-        adjustCamera
+        adjustCamera={false}
         shadows="contact"
         environment="sunset"
         preset="soft"

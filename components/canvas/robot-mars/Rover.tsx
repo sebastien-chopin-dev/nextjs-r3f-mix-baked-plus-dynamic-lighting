@@ -3,15 +3,15 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { useGLTF, useTexture } from "@react-three/drei";
+import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
-import { DRACO_PATH, MODELS, TEXTURES, prepareBakeTexture } from "./assets";
+import { MODELS, TEXTURES, prepareBakeTexture, useModel } from "./assets";
 
 const HEAD_TURN_SPEED = 4;
 
 // Keeps the GLB's MeshStandardMaterial (real-time specular on top) and adds the bake as lightMap + aoMap.
 export function Rover({ lookAt }: { lookAt: THREE.Vector3 }) {
-  const { scene } = useGLTF(MODELS.rover, DRACO_PATH);
+  const scene = useModel(MODELS.rover);
   const { light, ao } = useTexture({
     light: TEXTURES.roverLight,
     ao: TEXTURES.roverAo,

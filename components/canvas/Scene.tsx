@@ -3,12 +3,9 @@
 import { Canvas, type CanvasProps } from "@react-three/fiber";
 import { Preload } from "@react-three/drei";
 import * as THREE from "three";
-import { r3f } from "@/lib/r3f-tunnel";
 
-type SceneProps = Omit<CanvasProps, "children">;
-
-// The one Canvas of the app. It persists across route changes; only the tunnelled children change.
-export default function Scene(props: SceneProps) {
+// A Canvas that lives inside its section, so it scrolls natively with the page (no lag).
+export default function Scene({ children, ...props }: CanvasProps) {
   return (
     <Canvas
       {...props}
@@ -16,7 +13,7 @@ export default function Scene(props: SceneProps) {
         gl.toneMapping = THREE.AgXToneMapping;
       }}
     >
-      <r3f.Out />
+      {children}
       <Preload all />
     </Canvas>
   );

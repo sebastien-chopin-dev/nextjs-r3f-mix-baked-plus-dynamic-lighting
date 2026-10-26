@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Layout3D } from "@/components/dom/Layout3D";
+import { ThemeToggle } from "@/components/dom/ThemeToggle";
 import "./globals.css";
+
+// Dark by default. Runs before paint so a saved "light" choice never flashes dark first.
+const themeScript = `try{if(localStorage.getItem("theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,10 +25,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="min-h-full">
-        <Layout3D>{children}</Layout3D>
+        {children}
+        <ThemeToggle />
       </body>
     </html>
   );

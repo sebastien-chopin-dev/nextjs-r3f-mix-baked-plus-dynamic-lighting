@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT. © 2026 Tridimotion (https://tridimotion.com). Credit appreciated.
+import { useMemo } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -27,6 +28,14 @@ export const TEXTURES = {
 export function preloadRobotMars() {
   Object.values(MODELS).forEach((url) => useGLTF.preload(url, DRACO_PATH));
   useTexture.preload(Object.values(TEXTURES));
+}
+
+// useGLTF caches one scene per URL, and a three.js object has one parent. With cacheComponents,
+// the hidden demo page keeps its canvas while /rover mounts another, so each use gets a clone
+// (geometries, materials and textures stay shared).
+export function useModel(url: string) {
+  const { scene } = useGLTF(url, DRACO_PATH);
+  return useMemo(() => scene.clone(), [scene]);
 }
 
 // glTF UVs are not flipped. Color bakes are sRGB; AO and bump are data.
