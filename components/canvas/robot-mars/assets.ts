@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT. © 2026 Tridimotion (https://tridimotion.com). Credit appreciated.
 import { useGLTF, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 

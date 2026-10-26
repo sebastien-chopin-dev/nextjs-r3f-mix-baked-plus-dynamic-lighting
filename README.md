@@ -42,3 +42,10 @@ public/draco/                self-hosted Draco decoder (from three/examples/jsm/
 4. The `sunset` environment HDR and the Google font come from CDNs, so the demo needs a network connection. Self-host them for offline use.
 
 The Blender `.blend` source and bake setup are not included.
+
+## Credits and license
+
+- **Code:** MIT, © 2026 [Tridimotion](https://tridimotion.com). If you reuse the 3D viz component, please credit **@tridimotion**.
+- **Shared-canvas setup:** based on [pmndrs/react-three-next](https://github.com/pmndrs/react-three-next) (MIT).
+- **3D model:** original by [Polygon Runway](https://polygonrunway.com), optimized and baked by Tridimotion. **Not MIT, not for reuse:** see [public/models/LICENSE.md](public/models/LICENSE.md).
+- Notices: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

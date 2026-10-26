@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT. © 2026 Tridimotion (https://tridimotion.com). Credit appreciated.
 "use client";
 
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";

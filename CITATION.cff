@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you reuse the 3D viz component, please credit Tridimotion (@tridimotion)."
+title: "Next.js + R3F: baked + dynamic lighting"
+type: software
+authors:
+  - name: Tridimotion
+    website: "https://tridimotion.com"
+repository-code: "https://github.com/sebastien-chopin-dev/nextjs-r3f-mix-baked-plus-dynamic-lighting"
+license: MIT
