@@ -2,11 +2,12 @@
 import { useMemo } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import * as THREE from "three";
+import { withBasePath } from "@/lib/base-path";
 
 // Self-hosted decoder (copied from three/examples/jsm/libs/draco/gltf). All three GLBs are Draco-compressed.
-export const DRACO_PATH = "/draco/";
+export const DRACO_PATH = withBasePath("/draco/");
 
-const DIR = "/models/robot-mars";
+const DIR = withBasePath("/models/robot-mars");
 
 export const MODELS = {
   rover: `${DIR}/rover-body.glb`,
@@ -30,9 +31,9 @@ export function preloadRobotMars() {
   useTexture.preload(Object.values(TEXTURES));
 }
 
-// useGLTF caches one scene per URL, and a three.js object has one parent. With cacheComponents,
-// the hidden demo page keeps its canvas while /rover mounts another, so each use gets a clone
-// (geometries, materials and textures stay shared).
+// useGLTF caches one scene per URL, and a three.js object has one parent. When two canvases
+// show the model (the section and /rover, even briefly during navigation), each needs its own
+// copy, so each use gets a clone (geometries, materials and textures stay shared).
 export function useModel(url: string) {
   const { scene } = useGLTF(url, DRACO_PATH);
   return useMemo(() => scene.clone(), [scene]);

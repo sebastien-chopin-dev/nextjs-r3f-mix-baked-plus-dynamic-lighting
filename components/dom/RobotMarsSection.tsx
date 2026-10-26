@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { useOnScreen } from "@/hooks/useOnScreen";
+import { withBasePath } from "@/lib/base-path";
 import { FullscreenIcon, overlayButton, Spinner } from "./ui";
 
 const Scene = dynamic(() => import("@/components/canvas/Scene"), {
@@ -44,7 +45,7 @@ export function RobotMarsSection() {
           </Link>
           {/* Phones get a still image, larger screens the live scene. */}
           <Image
-            src="/images/robot-mars-fallback.webp"
+            src={withBasePath("/images/robot-mars-fallback.webp")}
             alt="Mars rover on rocky ground"
             fill
             sizes="100vw"

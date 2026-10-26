@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "next build && node scripts/flatten-export-segments.mjs",
+    "start": "npx serve@14.2.4 out",
     "lint": "eslint"
   },
   "dependencies": {

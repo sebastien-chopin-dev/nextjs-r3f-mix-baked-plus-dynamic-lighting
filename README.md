@@ -2,6 +2,8 @@
 
 Template for embedding real-time 3D in a Next.js site: a Mars rover scene with Blender (Cycles) baked light mixed with three.js real-time shading.
 
+**Live demo:** https://sebastien-chopin-dev.github.io/nextjs-r3f-mix-baked-plus-dynamic-lighting/
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshot-dark.webp">
   <img src="docs/screenshot-light.webp" alt="Demo section: Mars rover on baked ground, next to the page text, with a Fullscreen button">
@@ -11,7 +13,9 @@ Stack: Next.js 16 (App Router, Turbopack), React 19, three 0.186, @react-three/f
 
 ```bash
 npm install
-npm run dev   # http://localhost:3000
+npm run dev     # http://localhost:3000
+npm run build   # static export to out/
+npm run start   # serve out/
 ```
 
 ## How it works
@@ -26,9 +30,17 @@ npm run dev   # http://localhost:3000
 - **Real-time.** drei `<Stage environment="sunset">` with contact shadows + one directional light.
 - **Interaction.** Clamped `OrbitControls`; when an orbit ends the rover's `RoverHead` node eases to face the camera.
 - **Fullscreen.** `/rover` shows the same scene at viewport size, phones included. Exit (or Esc) goes back to `/#robot-mars`.
-  - `cacheComponents` keeps the demo page (and its canvas) alive, hidden, while `/rover` is open. A three.js object has one parent, so `useModel` clones the cached `useGLTF` scene per canvas.
+  - A three.js object has one parent, so `useModel` clones the cached `useGLTF` scene per canvas.
 - **Theme.** Dark by default, toggle bottom-right (saved in `localStorage`). Colors are CSS tokens in `globals.css`; the canvas is transparent, so the scene sits on either theme.
 - **Camera.** No animated `Bounds` fit: the camera starts where the fit would end, and backs off on narrow canvases.
+
+## Deploy (GitHub Pages)
+
+- Static export (`output: "export"`): every page is pre-rendered, the 3D runs in the browser.
+- `.github/workflows/pages.yml` builds and deploys on each push to `main`. One-time setup: **Settings → Pages → Source: GitHub Actions**.
+- The site lives under `/<repo>/`. The workflow sets `PAGES_BASE_PATH`; `next/link` adds it, asset URLs go through `withBasePath()`.
+- No `cacheComponents`: it enables PPR, which a static export rejects.
+- `scripts/flatten-export-segments.mjs` works around a Next 16.4 export bug (nested route payloads the client requests flat).
 
 ## Layout
 
@@ -38,6 +50,9 @@ components/canvas/           Scene (the Canvas)
 components/canvas/robot-mars assets + Rover, Ground, Rocks, RobotMarsScene
 components/dom/              RobotMarsSection, RobotMarsFullscreen, ui
 hooks/useOnScreen.ts
+lib/base-path.ts             withBasePath() for asset URLs
+scripts/                     post-build fix for the static export
+.github/workflows/pages.yml  GitHub Pages deploy
 public/models/robot-mars/    GLBs (Draco) + bakes
 public/draco/                self-hosted Draco decoder (from three/examples/jsm/libs/draco/gltf)
 docs/                        README screenshots
